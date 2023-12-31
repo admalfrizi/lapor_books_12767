@@ -1,3 +1,3 @@
 # lapor_book_apps
 
-A new Flutter project.
+A repository flutter apps for Bimbingan Karir Project in order to fulfil an Certification for LSP

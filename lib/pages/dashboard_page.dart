@@ -98,18 +98,27 @@ class _DashboardFull extends State<DashboardFull> {
   Widget build(BuildContext context) {
     pages = <Widget>[
       AllLaporanPage(akun: akun),
-      const MyLaporanPage(),
+      MyLaporanPage(akun: akun),
       ProfilePage(akun: akun),
     ];
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: _selectedIndex == 2 ? null : FloatingActionButton(
         backgroundColor: primaryColor,
         child: Icon(Icons.add, size: 35),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, '/add', arguments: {
+            'akun': akun,
+          });
+        },
       ),
       appBar: AppBar(
         backgroundColor: primaryColor,
-        title: const Text('Lapor Book'),
+        title: const Text(
+            'Lapor Book',
+          style: TextStyle(
+            color: Colors.white
+          ),
+        ),
         centerTitle: true,
       ),
       bottomNavigationBar: BottomNavigationBar(

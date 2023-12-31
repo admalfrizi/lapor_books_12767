@@ -67,21 +67,29 @@ class _AllLaporanPageState extends State<AllLaporanPage> {
       child: Container(
         width: double.infinity,
         margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      //   child: GridView.builder(
-      //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      //         crossAxisCount: 2,
-      //         crossAxisSpacing: 10,
-      //         mainAxisSpacing: 10,
-      //         childAspectRatio: 1 / 1.234,
-      //       ),
-      //       itemCount: 1,
-      //       itemBuilder: (context, index) {
-      //         return ListItem(
-      //           laporan: listLaporan[index],
-      //           akun: widget.akun,
-      //           isLaporanku: false,
-      //         );
-      //       }),
+        child: listLaporan.isEmpty ? const Center(
+          child: Column(
+            children: [
+              Text(
+                  'Datanya Kosong....'
+              )
+            ],
+          ),
+        ) : GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 1 / 1.234,
+            ),
+            itemCount: listLaporan.length,
+            itemBuilder: (context, index) {
+              return ListItem(
+                laporan: listLaporan[index],
+                akun: widget.akun,
+                isLaporanku: false,
+              );
+            }) ,
       ),
     );
   }

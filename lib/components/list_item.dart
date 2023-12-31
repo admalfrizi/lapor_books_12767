@@ -100,7 +100,6 @@ class _ListItemState extends State<ListItem> {
                   border: Border.symmetric(horizontal: BorderSide(width: 2))),
               child: Text(
                 widget.laporan.judul,
-                style: headerStyle(level: 4),
               ),
             ),
             Row(
@@ -118,7 +117,6 @@ class _ListItemState extends State<ListItem> {
                     alignment: Alignment.center,
                     child: Text(
                       widget.laporan.status,
-                      style: headerStyle(level: 5, dark: false),
                     ),
                   ),
                 ),
@@ -134,7 +132,6 @@ class _ListItemState extends State<ListItem> {
                     alignment: Alignment.center,
                     child: Text(
                       DateFormat('dd/MM/yyyy').format(widget.laporan.tanggal),
-                      style: headerStyle(level: 5, dark: false),
                     ),
                   ),
                 )

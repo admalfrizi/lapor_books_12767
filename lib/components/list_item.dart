@@ -95,7 +95,7 @@ class _ListItemState extends State<ListItem> {
             Container(
               width: double.infinity,
               alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 18.5),
               decoration: const BoxDecoration(
                   border: Border.symmetric(horizontal: BorderSide(width: 2))),
               child: Text(

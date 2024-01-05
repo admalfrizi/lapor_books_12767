@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lapor_book_apps/pages/dashboard_page.dart';
+import 'package:lapor_book_apps/pages/detail_laporan_page.dart';
 import 'package:lapor_book_apps/pages/splash_page.dart';
 import 'firebase_options.dart';
 import 'pages/add_form_page.dart';
@@ -18,7 +19,7 @@ Future<void> main() async {
     title: 'Lapor Book',
     theme: ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      useMaterial3: true,
+      useMaterial3: false,
     ),
     initialRoute: '/',
     routes: {
@@ -27,6 +28,7 @@ Future<void> main() async {
       '/register': (context) => const RegisterPage(),
       '/dashboard': (context) => const DashboardPage(),
       '/add': (context) => AddFormPage(),
+      '/detail': (context) => DetailLaporanPage(),
     },
   ));
 }

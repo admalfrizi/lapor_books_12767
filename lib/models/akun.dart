@@ -9,6 +9,7 @@ class Akun {
   Akun({
     required this.nama,
     required this.email,
+
     required this.noHp,
     required this.role,
     required this.uid,

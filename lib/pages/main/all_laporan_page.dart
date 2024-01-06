@@ -18,10 +18,17 @@ class _AllLaporanPageState extends State<AllLaporanPage> {
 
   List<Laporan> listLaporan = [];
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getTransaksi();
+  }
+
   void getTransaksi() async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
-      await _firestore.collection('laporan').get();
+          await _firestore.collection('laporan').get();
 
       setState(() {
         listLaporan.clear();
@@ -61,35 +68,31 @@ class _AllLaporanPageState extends State<AllLaporanPage> {
 
   @override
   Widget build(BuildContext context) {
-    getTransaksi();
-    
     return SafeArea(
       child: Container(
         width: double.infinity,
         margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: listLaporan.isEmpty ? const Center(
-          child: Column(
-            children: [
-              Text(
-                  'Datanya Kosong....'
+        child: listLaporan.isEmpty
+            ? const Center(
+                child: Column(
+                  children: [Text('Datanya Kosong....')],
+                ),
               )
-            ],
-          ),
-        ) : GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 1 / 1.234,
-            ),
-            itemCount: listLaporan.length,
-            itemBuilder: (context, index) {
-              return ListItem(
-                laporan: listLaporan[index],
-                akun: widget.akun,
-                isLaporanku: false,
-              );
-            }) ,
+            : GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: 1 / 1.234,
+                ),
+                itemCount: listLaporan.length,
+                itemBuilder: (context, index) {
+                  return ListItem(
+                    laporan: listLaporan[index],
+                    akun: widget.akun,
+                    isLaporanku: false,
+                  );
+                }),
       ),
     );
   }

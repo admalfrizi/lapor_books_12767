@@ -13,17 +13,15 @@ class ListItem extends StatefulWidget {
   final bool isLaporanku;
   ListItem(
       {super.key,
-        required this.laporan,
-        required this.akun,
-        required this.isLaporanku}
-      );
+      required this.laporan,
+      required this.akun,
+      required this.isLaporanku});
 
   @override
   State<ListItem> createState() => _ListItemState();
 }
 
 class _ListItemState extends State<ListItem> {
-
   final _firestore = FirebaseFirestore.instance;
   final _storage = FirebaseStorage.instance;
 
@@ -83,19 +81,19 @@ class _ListItemState extends State<ListItem> {
           children: [
             widget.laporan.gambar != ''
                 ? Image.network(
-              widget.laporan.gambar!,
-              width: 130,
-              height: 130,
-            )
+                    widget.laporan.gambar!,
+                    width: 130,
+                    height: 130,
+                  )
                 : Image.asset(
-              'assets/istock-default.jpg',
-              width: 130,
-              height: 130,
-            ),
+                    'assets/istock-default.jpg',
+                    width: 130,
+                    height: 130,
+                  ),
             Container(
               width: double.infinity,
               alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(vertical: 18.5),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               decoration: const BoxDecoration(
                   border: Border.symmetric(horizontal: BorderSide(width: 2))),
               child: Text(

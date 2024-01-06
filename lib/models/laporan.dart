@@ -1,7 +1,7 @@
 class Laporan {
   final String uid;
   final String docId;
-
+  Map? likes;
   final String judul;
   final String instansi;
   String? deskripsi;
@@ -19,6 +19,7 @@ class Laporan {
     required this.instansi,
     this.deskripsi,
     this.gambar,
+    this.likes,
     required this.nama,
     required this.status,
     required this.tanggal,

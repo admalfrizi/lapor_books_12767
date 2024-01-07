@@ -92,6 +92,19 @@ class _DetailLaporanPageState extends State<DetailLaporanPage> {
     if(mounted){
       checkLikes();
     }
+
+    Future<int> getTotalLikes() async {
+      var getLaporan = _firestore.collection('laporan').doc(laporan.docId);
+      var docSnapshot = await getLaporan.get();
+
+      Map<String, dynamic> data = docSnapshot.data()!;
+      List? likesData = data['likes'];
+      int? total = likesData?.length ?? 0;
+
+      return total;
+    }
+
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
@@ -156,6 +169,36 @@ class _DetailLaporanPageState extends State<DetailLaporanPage> {
                           onPressed: () {
                             launch(laporan.maps);
                           },
+                        ),
+                      ),
+                      SizedBox(height: 50),
+                      Container(
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.favorite_rounded,
+                              color: Colors.blue,
+                            ),
+                            SizedBox(width: 12,),
+                            FutureBuilder<int>(
+                              future: getTotalLikes(),
+                              builder: (BuildContext context,  snapshot) {
+                                if (!snapshot.hasData) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else {
+                                  final likesTotal = snapshot.data;
+                                  return Text(
+                                    "${likesTotal.toString()} Likes",
+                                    style: TextStyle(
+                                      fontSize: 16
+                                    ),
+                                  );
+                                }
+                              },
+                            )
+                          ],
                         ),
                       ),
                       SizedBox(height: 50),

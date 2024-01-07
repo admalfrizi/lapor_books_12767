@@ -148,6 +148,7 @@ class _AddFormPageState extends State<AddFormPage> {
         'instansi': instansi,
         'deskripsi': deskripsi,
         'gambar': url,
+        'likes' : [],
         'nama': akun.nama,
         'status': 'Posted', // posted, process, done
         'tanggal': timestamp,

@@ -46,8 +46,8 @@ class _ListItemState extends State<ListItem> {
     var docSnapshot = await getLaporan.get();
 
     Map<String, dynamic> data = docSnapshot.data()!;
-    List likesData = data['likes'];
-    int total = likesData.length;
+    List? likesData = data['likes'];
+    int? total = likesData?.length ?? 0;
 
     return total;
   }

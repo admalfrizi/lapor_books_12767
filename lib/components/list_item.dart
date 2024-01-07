@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -24,6 +25,7 @@ class ListItem extends StatefulWidget {
 class _ListItemState extends State<ListItem> {
   final _firestore = FirebaseFirestore.instance;
   final _storage = FirebaseStorage.instance;
+  final _auth = FirebaseAuth.instance;
 
   void deleteLaporan() async {
     try {
@@ -37,6 +39,24 @@ class _ListItemState extends State<ListItem> {
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<int> getLikedTotal() async {
+    var getLaporan = _firestore.collection('laporan').doc(widget.laporan.docId);
+    var docSnapshot = await getLaporan.get();
+
+    Map<String, dynamic> data = docSnapshot.data()!;
+    List likesData = data['likes'];
+    int total = likesData.length;
+
+    return total;
+  }
+  
+
+  @override
+  void initState() {
+    super.initState();
+    getLikedTotal();
   }
 
   @override
@@ -93,47 +113,61 @@ class _ListItemState extends State<ListItem> {
             Container(
               width: double.infinity,
               alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 15),
               decoration: const BoxDecoration(
                   border: Border.symmetric(horizontal: BorderSide(width: 2))),
               child: Text(
                 widget.laporan.judul,
               ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(
-                        color: warningColor,
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(5),
-                        ),
-                        border: const Border.symmetric(
-                            vertical: BorderSide(width: 1))),
-                    alignment: Alignment.center,
-                    child: Text(
-                      widget.laporan.status,
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      decoration: BoxDecoration(
+                          color: warningColor,
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(5),
+                          ),
+                          border: const Border.symmetric(
+                              vertical: BorderSide(width: 1))),
+                      alignment: Alignment.center,
+                      child: Text(
+                        widget.laporan.status,
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: const BorderRadius.only(
-                            bottomRight: Radius.circular(5)),
-                        border: const Border.symmetric(
-                            vertical: BorderSide(width: 1))),
-                    alignment: Alignment.center,
-                    child: Text(
-                      DateFormat('dd/MM/yyyy').format(widget.laporan.tanggal),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: const BorderRadius.only(
+                              bottomRight: Radius.circular(5)),
+                          border: const Border.symmetric(
+                              vertical: BorderSide(width: 1))),
+                      alignment: Alignment.center,
+                      child: FutureBuilder<int>(
+                        future: getLikedTotal(),
+                        builder: (BuildContext context,  snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(
+                                child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            final likesTotal = snapshot.data;
+                            return Text(
+                              "${likesTotal.toString()} Likes",
+                            );
+                          }
+                        },
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             )
           ],
         ),

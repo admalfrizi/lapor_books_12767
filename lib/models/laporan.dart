@@ -1,7 +1,7 @@
 class Laporan {
   final String uid;
   final String docId;
-  Map? likes;
+  List? likes;
   final String judul;
   final String instansi;
   String? deskripsi;

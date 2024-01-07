@@ -24,6 +24,7 @@ class _DetailLaporanPageState extends State<DetailLaporanPage> {
   String? status;
   Laporan? laporan;
 
+
   Future launch(String uri) async {
     if (uri == '') return;
     if (!await launchUrl(Uri.parse(uri))) {
@@ -50,19 +51,47 @@ class _DetailLaporanPageState extends State<DetailLaporanPage> {
     Laporan laporan = arguments['laporan'];
     Akun akun = arguments['akun'];
 
+
     void likedLaporan() async {
       if (!isLiked) {
-        CollectionReference getLaporan = _firestore.collection('laporan');
-        final id = laporan.docId;
+        DocumentReference getLaporan = _firestore.collection('laporan').doc(laporan.docId);
         final currentUserId = _auth.currentUser?.uid;
 
-        await getLaporan.doc(id).update({'likes.userId': currentUserId});
-        setState(() {
-          isLiked = true;
+        getLaporan.update({
+          'likes': FieldValue.arrayUnion([currentUserId])
         });
+
       }
     }
 
+    void checkLikes() async {
+      var getLaporan = _firestore.collection('laporan').doc(laporan.docId);
+      final currentUserId = _auth.currentUser?.uid;
+      var docSnapshot = await getLaporan.get();
+      if(docSnapshot.exists){
+        Map<String, dynamic> data = docSnapshot.data()!;
+        List likesData = data['likes'];
+
+        if(likesData.contains(currentUserId) == true){
+          if(mounted){
+            setState(() {
+              isLiked = true;
+            });
+          }
+        }
+
+      } else {
+        if(mounted){
+          setState(() {
+            isLiked = false;
+          });
+        }
+      }
+    }
+
+    if(mounted){
+      checkLikes();
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
@@ -166,15 +195,15 @@ class _DetailLaporanPageState extends State<DetailLaporanPage> {
                 ),
               ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.amber,
-        onPressed: () {
-          likedLaporan();
-        },
-        child: Visibility(
-          visible: !isLiked ? true : false,
+      floatingActionButton: Visibility(
+        visible: !isLiked ? true : false,
+        child: FloatingActionButton(
+          backgroundColor: Colors.amber,
+          onPressed: () {
+            likedLaporan();
+          },
           child: const Icon(
-            Icons.favorite_border_outlined,
+            Icons.favorite_rounded,
             color: Colors.white,
           ),
         ),

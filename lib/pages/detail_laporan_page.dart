@@ -238,19 +238,16 @@ class _DetailLaporanPageState extends State<DetailLaporanPage> {
                 ),
               ),
       ),
-      floatingActionButton: Visibility(
-        visible: !isLiked ? true : false,
-        child: FloatingActionButton(
-          backgroundColor: Colors.amber,
-          onPressed: () {
-            likedLaporan();
-          },
-          child: const Icon(
-            Icons.favorite_rounded,
-            color: Colors.white,
-          ),
+      floatingActionButton: !isLiked ? FloatingActionButton(
+        backgroundColor: Colors.amber,
+        onPressed: () {
+          likedLaporan();
+        },
+        child: const Icon(
+          Icons.favorite_rounded,
+          color: Colors.white,
         ),
-      ),
+      ) : null,
     );
   }
 

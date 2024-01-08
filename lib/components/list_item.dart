@@ -25,7 +25,6 @@ class ListItem extends StatefulWidget {
 class _ListItemState extends State<ListItem> {
   final _firestore = FirebaseFirestore.instance;
   final _storage = FirebaseStorage.instance;
-  final _auth = FirebaseAuth.instance;
 
   void deleteLaporan() async {
     try {
@@ -113,11 +112,12 @@ class _ListItemState extends State<ListItem> {
             Container(
               width: double.infinity,
               alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(vertical: 15),
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
               decoration: const BoxDecoration(
                   border: Border.symmetric(horizontal: BorderSide(width: 2))),
               child: Text(
                 widget.laporan.judul,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             Expanded(

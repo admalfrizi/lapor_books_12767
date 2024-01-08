@@ -18,6 +18,13 @@ class _AllLaporanPageState extends State<AllLaporanPage> {
 
   List<Laporan> listLaporan = [];
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getTransaksi();
+  }
+
   void getTransaksi() async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
@@ -64,7 +71,7 @@ class _AllLaporanPageState extends State<AllLaporanPage> {
 
   @override
   Widget build(BuildContext context) {
-    getTransaksi();
+
     return SafeArea(
       child: Container(
         width: double.infinity,

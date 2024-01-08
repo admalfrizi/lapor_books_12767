@@ -26,6 +26,20 @@ class Laporan {
     required this.maps,
     this.komentar,
   });
+
+  factory Laporan.fromMap(Map<String, dynamic> map) {
+    return Laporan(
+        uid: map['uid'],
+        docId: map['docId'],
+        judul: map['judul'],
+        instansi: map['instansi'],
+        nama: map['nama'],
+        status: map['status'],
+        tanggal: map['tanggal'],
+        maps: map['maps'],
+        komentar: List<Komentar>.from(map['komentar']?.map((x) => Komentar.fromMap(x)))
+    );
+  }
 }
 
 class Komentar {
@@ -36,4 +50,11 @@ class Komentar {
     required this.nama,
     required this.isi,
   });
+
+  factory Komentar.fromMap(Map<String, dynamic> map) {
+    return Komentar(
+      nama: map['nama'],
+      isi: map['isi'],
+    );
+  }
 }

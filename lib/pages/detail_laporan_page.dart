@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lapor_book_apps/components/KomentarList.dart';
+import 'package:lapor_book_apps/components/komentar_laporan_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../components/status_dialog.dart';
@@ -23,6 +25,7 @@ class _DetailLaporanPageState extends State<DetailLaporanPage> {
   final _auth = FirebaseAuth.instance;
   String? status;
   Laporan? laporan;
+  List? komentarData;
 
 
   Future launch(String uri) async {
@@ -42,6 +45,13 @@ class _DetailLaporanPageState extends State<DetailLaporanPage> {
       },
     );
   }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +102,18 @@ class _DetailLaporanPageState extends State<DetailLaporanPage> {
 
     if(mounted){
       checkLikes();
+    }
+
+    void komentarLaporan(laporan, akun) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return KomentarLaporanDialog(
+            laporan: laporan,
+            akun: akun,
+          );
+        },
+      );
     }
 
     Future<int> getTotalLikes() async {
@@ -176,7 +198,7 @@ class _DetailLaporanPageState extends State<DetailLaporanPage> {
                       Container(
                         child: Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.favorite_rounded,
                               color: Colors.blue,
                             ),
@@ -192,7 +214,7 @@ class _DetailLaporanPageState extends State<DetailLaporanPage> {
                                   final likesTotal = snapshot.data;
                                   return Text(
                                     "${likesTotal.toString()} Likes",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 16
                                     ),
                                   );
@@ -214,6 +236,22 @@ class _DetailLaporanPageState extends State<DetailLaporanPage> {
                             EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         child: Text(laporan.deskripsi ?? ''),
                       ),
+                      Container(
+                        width: 250,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            komentarLaporan(laporan, akun);
+                          },
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: primaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Text('Tambahkan Komentar'),
+                        ),
+                      ),
                       if (akun.role == 'admin')
                         Container(
                           width: 250,
@@ -234,6 +272,40 @@ class _DetailLaporanPageState extends State<DetailLaporanPage> {
                             child: Text('Ubah Status'),
                           ),
                         ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        'List Komentar',
+                        style: headerStyle(level: 3),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: laporan.komentar!.isEmpty ? Text(
+                          'Semua komentar yang di inputkan nantinya akan keluar di bagian ini',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18
+                          ),
+                            textAlign: TextAlign.center
+                        ) : Column(
+                          children: [
+                            for(var komentar in laporan.komentar!)
+                              KomentarList(
+                                isi: komentar.isi,
+                                nama: komentar.nama,
+                              ),
+                          ],
+                        ) ,
+                      ),
                     ],
                   ),
                 ),

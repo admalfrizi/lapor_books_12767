@@ -22,7 +22,6 @@ class _MyLaporanPageState extends State<MyLaporanPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getTransaksi();
   }

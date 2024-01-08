@@ -54,7 +54,10 @@ class _AllLaporanPageState extends State<AllLaporanPage> {
       });
     } catch (e) {
       final snackbar = SnackBar(content: Text(e.toString()));
-      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      if(mounted){
+        ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      }
+
       print(e);
     }
   }

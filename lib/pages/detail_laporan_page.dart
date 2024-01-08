@@ -51,19 +51,6 @@ class _DetailLaporanPageState extends State<DetailLaporanPage> {
     Laporan laporan = arguments['laporan'];
     Akun akun = arguments['akun'];
 
-
-    void likedLaporan() async {
-      if (!isLiked) {
-        DocumentReference getLaporan = _firestore.collection('laporan').doc(laporan.docId);
-        final currentUserId = _auth.currentUser?.uid;
-
-        getLaporan.update({
-          'likes': FieldValue.arrayUnion([currentUserId])
-        });
-
-      }
-    }
-
     void checkLikes() async {
       var getLaporan = _firestore.collection('laporan').doc(laporan.docId);
       final currentUserId = _auth.currentUser?.uid;
@@ -88,6 +75,20 @@ class _DetailLaporanPageState extends State<DetailLaporanPage> {
         }
       }
     }
+
+    void likedLaporan() async {
+      DocumentReference getLaporan = _firestore.collection('laporan').doc(laporan.docId);
+      final currentUserId = _auth.currentUser?.uid;
+
+      getLaporan.update({
+        'likes': FieldValue.arrayUnion([currentUserId])
+      });
+
+      setState(() {
+        isLiked = true;
+      });
+    }
+
 
     if(mounted){
       checkLikes();
